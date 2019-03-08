@@ -2,6 +2,7 @@ package killergame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 public class VisibleObject implements Renderizable {
 
@@ -27,7 +28,7 @@ public class VisibleObject implements Renderizable {
     @Override
     public void paint() {  
 
-        MyBufferedImage image = this.getViewer().getImage();
+        BufferedImage image = this.getViewer().getImage();
         Graphics g = image.getGraphics();
         g.setColor(this.getColor());
         g.fillOval(posX, posY, this.width, this.heigth);
@@ -36,7 +37,7 @@ public class VisibleObject implements Renderizable {
    
     @Override
     public void clear() {
-        MyBufferedImage image = this.getViewer().getImage();
+        BufferedImage image = this.getViewer().getImage();
         Graphics g = image.getGraphics();
         g.setColor(this.getViewer().getColor());
         g.fillOval(posX, posY, this.width, this.heigth);

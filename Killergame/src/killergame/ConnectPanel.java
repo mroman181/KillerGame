@@ -53,6 +53,7 @@ public class ConnectPanel extends JPanel implements ActionListener {
             String ip = this.ipNS.getText();
             String puerto = this.portNS.getText();
             int port = Integer.parseInt(puerto);
+            vh.getClient().setChanged(true);
             vh.getClient().setSocket(ip, port);
             vh.closeLink();
         }
@@ -67,6 +68,7 @@ public class ConnectPanel extends JPanel implements ActionListener {
             String ip = this.ipPS.getText();
             String puerto = this.portPS.getText();
             int port = Integer.parseInt(puerto);
+            vh.getClient().setChanged(true);
             vh.getClient().setSocket(ip, port);
             vh.closeLink();
         }

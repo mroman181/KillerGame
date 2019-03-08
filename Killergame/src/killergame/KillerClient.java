@@ -19,12 +19,13 @@ public class KillerClient implements Runnable {
     private boolean isPad;
     private KillerPad pad;
     private int t = 0;
+    private boolean changed = false;
 
     public KillerClient(VisualHandler vh, KillerGame kg, int myport) {
         this.kg = kg;
         this.vh = vh;
         this.isPad = false;
-        myPort = myport;        
+        myPort = myport;
     }
 
     public KillerClient(String host, int port, VisualHandler vh, KillerGame kg, int myport) {
@@ -139,10 +140,13 @@ public class KillerClient implements Runnable {
 
                     }
                 }
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ex) {
-
+                if (changed) {
+                    changed=false;
+                } else {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException ex) {
+                    }
                 }
             }
         }
@@ -155,7 +159,11 @@ public class KillerClient implements Runnable {
         this.HOST = ip;
 
     }
-       
+
+    public void setChanged(boolean changed) {
+        this.changed = changed;
+    }
+
     private boolean tryToConnect() {
         String comand;
         boolean next = this.vh.isNext();

@@ -74,7 +74,6 @@ public class ConnectionHandler implements Runnable {
                             int id = Integer.parseInt(lastIP);
                             this.kg.crearKillerPad(clientSock, cliAddr, id);
                         }else{
-                            System.out.println("Full");
                             out.println("full");
                         }
                     }

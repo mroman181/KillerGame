@@ -2,6 +2,7 @@ package killergame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 public class Alive extends VisibleObject implements Runnable {
 
@@ -32,7 +33,7 @@ public class Alive extends VisibleObject implements Runnable {
     @Override
     public void paint() {
 
-        this.clear();
+        
 
         int x = this.getPosX();
         int y = this.getPosY();
@@ -40,7 +41,7 @@ public class Alive extends VisibleObject implements Runnable {
         this.setPosXprevious(x);
         this.setPosYprevious(y);
 
-        MyBufferedImage image = this.getViewer().getImage();
+        BufferedImage image = this.getViewer().getImage();
         Graphics g = image.getGraphics();
         g.setColor(this.getColor());
         g.fillOval(x, y, this.getWidth(), this.getHeigth());
@@ -48,7 +49,7 @@ public class Alive extends VisibleObject implements Runnable {
 
     @Override
     public void clear() {
-        MyBufferedImage image = this.getViewer().getImage();
+        BufferedImage image = this.getViewer().getImage();
         Graphics g = image.getGraphics();
         g.setColor(this.getViewer().getColor());
         g.fillOval(this.getPosXprevious(), this.getPosYprevious(), this.getWidth(), this.getHeigth());
