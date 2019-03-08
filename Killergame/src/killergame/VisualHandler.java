@@ -25,15 +25,15 @@ public class VisualHandler extends Thread {
     private boolean next; //Conecta con el next/Conecta con el previous
     private KillerClient client;
 
-    public VisualHandler(KillerGame kg, boolean next) {
+    public VisualHandler(KillerGame kg, boolean next, int myport) {
 
         this.kg = kg;
         this.next = next;
-        this.client = new KillerClient(this, this.kg);
+        this.client = new KillerClient(this, this.kg, myport);
         new Thread(client).start();
     }
 
-    public VisualHandler(Socket sock, String cliAddr, KillerGame kg, boolean next) {
+    public VisualHandler(Socket sock, String cliAddr, KillerGame kg, boolean next, int myport) {
 
         this.clientSock = sock;
         this.cliAddr = cliAddr;
@@ -48,7 +48,7 @@ public class VisualHandler extends Thread {
             Logger.getLogger(VisualHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        this.client = new KillerClient(cliAddr, sock.getPort(), this, this.kg);
+        this.client = new KillerClient(cliAddr, sock.getPort(), this, this.kg, myport);
         new Thread(client).start();
     }
 
@@ -100,13 +100,13 @@ public class VisualHandler extends Thread {
             
             String id = line.substring(5);
             //S'ha de comprovar que previousServer existesqui Sino el thread peta i es romp la connexio
-            if (this.kg.getPreviousServer() != null) {
+            if (this.kg.getNextServer() != null) {
 
                 if (id.equals(this.kg.getId())) {
-                    this.kg.getPreviousServer().sendStart(this.kg.getId());
+                    this.kg.getNextServer().sendStart(this.kg.getId());
                     this.kg.start();
                 } else {
-                    this.kg.getPreviousServer().sendCommand(line);
+                    this.kg.getNextServer().sendCommand(line);
                 }
 
             }
@@ -117,7 +117,7 @@ public class VisualHandler extends Thread {
             String id = line.substring(5);
 
             if (!id.equals(this.kg.getId())) {
-                this.kg.getPreviousServer().sendCommand(line);
+                this.kg.getNextServer().sendCommand(line);
                 if (line.substring(0, 5).equals("start")) {
                     this.kg.start();
                 } else {

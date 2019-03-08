@@ -21,7 +21,7 @@ public class Controlled extends Alive {
     @Override
     public void run() {
 
-        while (!this.isMuerto() || enviado) {
+        while (!this.isMuerto() && !enviado && this.getKillerGame().isStarted()) {
 
             try {
                 Thread.sleep(5);

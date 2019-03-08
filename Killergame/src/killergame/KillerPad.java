@@ -40,7 +40,7 @@ public class KillerPad implements Runnable {
             System.out.println("Error creando socket KillerPad");
         }
 
-        this.client = new KillerClient(cliAddr, sock.getPort(), this, this.kg, true);
+        this.client = new KillerClient(cliAddr, sock.getPort(), this, this.kg, true, this.kg.getServer().getPort());
         new Thread(client).start();
     }
 

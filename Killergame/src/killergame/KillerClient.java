@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class KillerClient implements Runnable {
 
     private int PORT; // server details
+    private int myPort;
     private String HOST;
     private Socket sock;
     private BufferedReader in; // i/o for the client
@@ -21,26 +20,29 @@ public class KillerClient implements Runnable {
     private KillerPad pad;
     private int t = 0;
 
-    public KillerClient(VisualHandler vh, KillerGame kg) {
+    public KillerClient(VisualHandler vh, KillerGame kg, int myport) {
         this.kg = kg;
         this.vh = vh;
         this.isPad = false;
+        myPort = myport;        
     }
 
-    public KillerClient(String host, int port, VisualHandler vh, KillerGame kg) {
+    public KillerClient(String host, int port, VisualHandler vh, KillerGame kg, int myport) {
         this.kg = kg;
         this.PORT = port;
         this.HOST = host;
         this.vh = vh;
         this.isPad = false;
+        myPort = myport;
     }
 
-    public KillerClient(String host, int port, KillerPad pad, KillerGame kg, boolean isPad) {
+    public KillerClient(String host, int port, KillerPad pad, KillerGame kg, boolean isPad, int myport) {
         this.kg = kg;
         this.PORT = 1234;
         this.HOST = host;
         this.pad = pad;
         this.isPad = isPad;
+        myPort = myport;
     }
 
     private void makeContact() throws IOException {
@@ -148,23 +150,24 @@ public class KillerClient implements Runnable {
     }
 
     public void setSocket(String ip, int port) {
-
+        System.out.println("IP: " + ip + "    port:" + port);
         this.PORT = port;
         this.HOST = ip;
 
     }
-
+       
     private boolean tryToConnect() {
         String comand;
         boolean next = this.vh.isNext();
         if (next) {
-            comand = "connectn" + KillerServer.getPort();
+            comand = "connectn" + myPort;
         } else {
-            comand = "connectp" + KillerServer.getPort();
+            comand = "connectp" + myPort;
         }
         try {
             makeContact();
             out.println(comand);
+            System.out.println(comand);
 
             return true;
         } catch (Exception ex) {

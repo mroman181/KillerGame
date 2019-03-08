@@ -27,9 +27,8 @@ public class KillerGame extends JFrame {
 
     public KillerGame() {
         super("KillerGame");
-
+        this.server = new KillerServer(this);
         
-
         this.objects = new ArrayList();
         this.muertos = new ArrayList();
         this.pads = new ArrayList();
@@ -38,7 +37,7 @@ public class KillerGame extends JFrame {
 
         this.crearPreviousServer();
         this.crearNextServer();
-        this.server = new KillerServer(this);
+        
         this.crearConnectPanel();
         this.setVisible(true);
         new Thread(server).start();
@@ -117,12 +116,12 @@ public class KillerGame extends JFrame {
     }
 
     public void crearPreviousServer() {
-        this.ps = new VisualHandler(this, false);
+        this.ps = new VisualHandler(this, false, this.server.getPort());
         new Thread(this.ps).start();
     }
 
     public void crearNextServer() {
-        this.ns = new VisualHandler(this, true);
+        this.ns = new VisualHandler(this, true, this.server.getPort());
         new Thread(this.ns).start();
     }
 
@@ -274,9 +273,10 @@ public class KillerGame extends JFrame {
                         }
                     }
                     if (crashed) {
-                        System.out.println("Han chocado");
+                        
                         switch (this.kr.crashed(alive, o)) {
                             case 1:
+                                System.out.println("Han chocado");
                                 //mueren ambas
                                 alive.die();
                                 o.die();

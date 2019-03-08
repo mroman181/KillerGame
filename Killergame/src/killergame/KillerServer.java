@@ -8,9 +8,25 @@ public class KillerServer implements Runnable {
 
     private static int PORT = 1234;
     private KillerGame kg;
+    private ServerSocket serverSock;
 
     public KillerServer(KillerGame kg) {
         this.kg = kg;
+        InetAddress inetAddress;
+        for (int i = 0; i < 100 && serverSock == null; i++) {
+
+            try {
+                serverSock = new ServerSocket(PORT + i);
+
+                inetAddress = InetAddress.getLocalHost();
+                this.kg.setId(inetAddress.getHostAddress() + "i" + (PORT + i));
+                PORT = PORT + i;
+
+            } catch (Exception e) {
+                System.out.println("Puerto " + (i + PORT) + " ya en uso");
+            }
+
+        }
     }
 
     public KillerGame getKillerGame() {
@@ -23,22 +39,7 @@ public class KillerServer implements Runnable {
 
     @Override
     public void run() {
-
-        ServerSocket serverSock = null;
-        InetAddress inetAddress;
-        for (int i = 0; i < 100 && serverSock == null; i++) {
-
-            try {
-                serverSock = new ServerSocket(PORT + i);
-
-                inetAddress = InetAddress.getLocalHost();
-                this.kg.setId(inetAddress.getHostAddress() + "i" + (PORT + i));
-
-            } catch (Exception e) {
-                System.out.println("Puerto " + (i + PORT) + " ya en uso");
-            }
-
-        }
+        
         Socket clientSock;
         
         if (serverSock != null) {

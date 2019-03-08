@@ -48,7 +48,7 @@ public class Autonomous extends Alive {
     @Override
     public void run() {
 
-        while (!this.isMuerto()) {
+        while (!this.isMuerto() && !enviado && this.getKillerGame().isStarted()) {
 
             try {
                 Thread.sleep(5);
