@@ -1,5 +1,6 @@
 package killergame;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -16,30 +17,45 @@ public class KillerServer implements Runnable {
         return kg;
     }
 
-    public static int getPort(){
+    public static int getPort() {
         return PORT;
     }
-    
+
     @Override
     public void run() {
 
-        try {
-                                    
-            ServerSocket serverSock = new ServerSocket(PORT);
-            Socket clientSock;
+        ServerSocket serverSock = null;
+        InetAddress inetAddress;
+        for (int i = 0; i < 100 && serverSock == null; i++) {
 
-            while (true) {
-                System.out.println("Waiting for a client...");
-                clientSock = serverSock.accept();                
-                ConnectionHandler ch = new ConnectionHandler(this.kg, clientSock);
-                new Thread(ch).start(); 
-                Thread.sleep(50);
+            try {
+                serverSock = new ServerSocket(PORT + i);
+
+                inetAddress = InetAddress.getLocalHost();
+                this.kg.setId(inetAddress.getHostAddress() + "i" + (PORT + i));
+
+            } catch (Exception e) {
+                System.out.println("Puerto " + (i + PORT) + " ya en uso");
             }
-        } catch (Exception e) {
-            System.out.println("Error Servidor");
+
+        }
+        Socket clientSock;
+        
+        if (serverSock != null) {
+            while (true) {
+                try {
+                    System.out.println("Waiting for a client...");
+                    clientSock = serverSock.accept();
+                    ConnectionHandler ch = new ConnectionHandler(this.kg, clientSock);
+                    new Thread(ch).start();
+                    Thread.sleep(50);
+                } catch (Exception e) {
+                    System.out.println("Error Servidor");
+                }
+            }
+        }else{
+            System.out.println("No se ha podido usar ninguna dirección como servidor");
         }
 
     }
 }
-
-    

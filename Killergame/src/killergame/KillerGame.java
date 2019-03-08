@@ -1,20 +1,9 @@
 package killergame;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 public class KillerGame extends JFrame {
 
@@ -37,14 +26,9 @@ public class KillerGame extends JFrame {
     private GamePanel gp;
 
     public KillerGame() {
-        super("KillerGame - Port 1234");
+        super("KillerGame");
 
-        InetAddress inetAddress;
-        try {
-            inetAddress = InetAddress.getLocalHost();
-            this.setId(inetAddress.getHostAddress() + "i" + KillerServer.getPort());
-        } catch (UnknownHostException ex) {
-        }
+        
 
         this.objects = new ArrayList();
         this.muertos = new ArrayList();
